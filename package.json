@@ -1,0 +1,38 @@
+{
+  "name": "geosimplify-js",
+  "version": "1.2.3",
+  "description": "A WGS84 geography feature simplifier, based on simplify-js",
+  "author": "Daniel Patterson",
+  "license": "BSD-2-Clause",
+  "keywords": [
+    "math",
+    "geometry",
+    "polyline",
+    "simplification"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mapbox/geosimplify-js.git"
+  },
+  "main": "geosimplify.js",
+  "files": [
+    "geosimplify.js"
+  ],
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "faucet": "0.0.1",
+    "jshint": "^2.9.5",
+    "tape": "^4.9.0"
+  },
+  "scripts": {
+    "test": "jshint geosimplify.js test/test.js && node test/test.js | faucet"
+  },
+  "jshintConfig": {
+    "quotmark": "single",
+    "trailing": true,
+    "unused": true
+  },
+  "dependencies": {
+    "cheap-ruler": "^2.5.1"
+  }
+}
