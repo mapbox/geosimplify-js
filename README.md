@@ -3,7 +3,7 @@
 This module simplifies sequences of [longitude,latitude] pairs using
 geography-aware measurement thresholds.
 
-Based on https://github.com/mourner/simplify-js, and `geosimplify-js`
+Based on https://github.com/mourner/simplify-js, `geosimplify-js`
 fixes the problem that the simple pythagorean measure used in `simplify-js`
 changes size if you simply give it longitude/latitude sequences to
 simplify.
@@ -15,7 +15,9 @@ simplify([[lon,lat],[lon,lat],[lon,lat]], offsetThresholdInMetres, gapThresholdI
 ```
 
 **path** - an array of `longitude,latitude` pairs
+
 **offsetThreshold** - how far outside the straight line a point needs to be for it to be "kept"
+
 **gapThreshold** - if removing a point would create a segment longer than this, do not remove it
 
 Example:
