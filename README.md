@@ -23,7 +23,7 @@ simplify([[lon,lat],[lon,lat],[lon,lat]], offsetThresholdInMetres, gapThresholdI
 Example:
 
 ```javascript
-var geosimplify = require('geosimplify');
+var geosimplify = require('@mapbox/geosimplify-js');
 var coords = [ [ 15.603332, 78.227070 ],
                [ 15.606422, 78.226824 ],
                [ 15.608782, 78.226667 ],
