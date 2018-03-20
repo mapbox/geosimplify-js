@@ -1,6 +1,6 @@
 {
-  "name": "geosimplify-js",
-  "version": "1.2.3",
+  "name": "@mapbox/geosimplify-js",
+  "version": "0.1.0",
   "description": "A WGS84 geography feature simplifier, based on simplify-js",
   "author": "Daniel Patterson",
   "license": "BSD-2-Clause",
@@ -22,10 +22,13 @@
     "benchmark": "^2.1.4",
     "faucet": "0.0.1",
     "jshint": "^2.9.5",
-    "tape": "^4.9.0"
+    "tape": "^4.9.0",
+    "eslint": "^3.19.0",
+    "eslint-config-mourner": "^2.0.1"
   },
   "scripts": {
-    "test": "jshint geosimplify.js test/test.js && node test/test.js | faucet"
+    "lint": "eslint *.js test/*.js --fix",
+    "test": "npm run lint && tape test/*.js"
   },
   "jshintConfig": {
     "quotmark": "single",
@@ -34,5 +37,11 @@
   },
   "dependencies": {
     "cheap-ruler": "^2.5.1"
+  },
+  "eslintConfig": {
+    "extends": "mourner",
+    "rules": {
+      "camelcase": 0
+    }
   }
 }
