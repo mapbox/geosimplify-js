@@ -23,8 +23,8 @@
     "faucet": "0.0.1",
     "jshint": "^2.9.5",
     "tape": "^4.9.0",
-    "eslint": "^3.19.0",
-    "eslint-config-mourner": "^2.0.1"
+    "eslint": "^6.7.2",
+    "eslint-config-mourner": "^3.0.0"
   },
   "scripts": {
     "lint": "eslint *.js test/*.js --fix",

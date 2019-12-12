@@ -6,13 +6,13 @@
  mourner.github.io/simplify-js
 */
 'use strict';
-var cheapRuler = require('cheap-ruler');
+const cheapRuler = require('cheap-ruler');
 
-var rulerCache = {};
+const rulerCache = {};
 
 function getRuler(latitude) {
 // Cache rulers every 0.00001 degrees of latitude
-    var roundedLatitude = Math.round(latitude * 100000);
+    const roundedLatitude = Math.round(latitude * 100000);
     if (rulerCache[roundedLatitude] === undefined) {
         rulerCache[roundedLatitude] = cheapRuler(latitude, 'meters');
     }
@@ -26,17 +26,17 @@ function getDist(p1, p2) {
 
 // Distance from a point to a segment (line between two points) in metres
 function getSegDist(p, p1, p2) {
-    var ruler = getRuler(p[1]);
-    var pointOnLine = ruler.pointOnLine([p1, p2], p).point;
+    const ruler = getRuler(p[1]);
+    const pointOnLine = ruler.pointOnLine([p1, p2], p).point;
     return ruler.distance(p, pointOnLine);
 }
 
 function simplifyDPStep(points, first, last, offsetTolerance, gapTolerance, simplified) {
-    var maxDistanceFound = offsetTolerance,
+    let maxDistanceFound = offsetTolerance,
         index;
 
-    for (var i = first + 1; i < last; i++) {
-        var distance = getSegDist(points[i], points[first], points[last]);
+    for (let i = first + 1; i < last; i++) {
+        const distance = getSegDist(points[i], points[first], points[last]);
 
         if (distance > maxDistanceFound) {
             index = i;
@@ -44,9 +44,9 @@ function simplifyDPStep(points, first, last, offsetTolerance, gapTolerance, simp
         }
     }
 
-// Don't remove a point if it would create a segment longer
-// than gapTolerance
-    var firstLastDist = getDist(points[first], points[last]);
+    // Don't remove a point if it would create a segment longer
+    // than gapTolerance
+    const firstLastDist = getDist(points[first], points[last]);
 
     if (maxDistanceFound > offsetTolerance || firstLastDist > gapTolerance) {
         if (index - first > 1) simplifyDPStep(points, first, index, offsetTolerance, gapTolerance, simplified);
@@ -57,8 +57,8 @@ function simplifyDPStep(points, first, last, offsetTolerance, gapTolerance, simp
 
 // simplification using Ramer-Douglas-Peucker algorithm
 function simplifyDouglasPeucker(points, offsetTolerance, gapTolerance) {
-    var last = points.length - 1;
-    var simplified = [points[0]];
+    const last = points.length - 1;
+    const simplified = [points[0]];
     simplifyDPStep(points, 0, last, offsetTolerance, gapTolerance, simplified);
     simplified.push(points[last]);
     return simplified;
