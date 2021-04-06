@@ -31,43 +31,60 @@ function getSegDist(p, p1, p2) {
     return ruler.distance(p, pointOnLine);
 }
 
-function simplifyDPStep(points, first, last, offsetTolerance, gapTolerance, simplified) {
-    let maxDistanceFound = offsetTolerance,
-        index;
+// simplification using Ramer-Douglas-Peucker algorithm
+function simplifyDouglasPeucker(points, offsetTolerance, gapTolerance, save) {
+    const last = points.length - 1;
+    save(0);
+    simplifyDPStep(0, last);
+    save(last);
 
-    for (let i = first + 1; i < last; i++) {
-        const distance = getSegDist(points[i], points[first], points[last]);
+    function simplifyDPStep(first, last) {
+        let maxDistanceFound = offsetTolerance,
+            index;
 
-        if (distance > maxDistanceFound) {
-            index = i;
-            maxDistanceFound = distance;
+        for (let i = first + 1; i < last; i++) {
+            const distance = getSegDist(points[i], points[first], points[last]);
+
+            if (distance > maxDistanceFound) {
+                index = i;
+                maxDistanceFound = distance;
+            }
+        }
+
+        // Don't remove a point if it would create a segment longer
+        // than gapTolerance
+        const firstLastDist = getDist(points[first], points[last]);
+
+        if (maxDistanceFound > offsetTolerance || firstLastDist > gapTolerance) {
+            if (index - first > 1) simplifyDPStep(first, index);
+            save(index);
+            if (last - index > 1) simplifyDPStep(index, last);
         }
     }
-
-    // Don't remove a point if it would create a segment longer
-    // than gapTolerance
-    const firstLastDist = getDist(points[first], points[last]);
-
-    if (maxDistanceFound > offsetTolerance || firstLastDist > gapTolerance) {
-        if (index - first > 1) simplifyDPStep(points, first, index, offsetTolerance, gapTolerance, simplified);
-        simplified.push(points[index]);
-        if (last - index > 1) simplifyDPStep(points, index, last, offsetTolerance, gapTolerance, simplified);
-    }
-}
-
-// simplification using Ramer-Douglas-Peucker algorithm
-function simplifyDouglasPeucker(points, offsetTolerance, gapTolerance) {
-    const last = points.length - 1;
-    const simplified = [points[0]];
-    simplifyDPStep(points, 0, last, offsetTolerance, gapTolerance, simplified);
-    simplified.push(points[last]);
-    return simplified;
 }
 
 function simplify(points, offsetTolerance, gapTolerance) {
     if (points.length <= 2) return points;
-    points = simplifyDouglasPeucker(points, offsetTolerance, gapTolerance);
-    return points;
+    const simplified = [];
+    simplifyDouglasPeucker(points, offsetTolerance, gapTolerance, save);
+    return simplified;
+
+    function save(index) {
+        simplified.push(points[index]);
+    }
+}
+
+function simplifyByRef(points, offsetTolerance, gapTolerance) {
+    if (points.length <= 2)
+        return points.map((_, i) => i);
+    const simplified = [];
+    simplifyDouglasPeucker(points, offsetTolerance, gapTolerance, save);
+    return simplified;
+
+    function save(index) {
+        simplified.push(index);
+    }
 }
 
 module.exports = simplify;
+module.exports.byRef = simplifyByRef;
