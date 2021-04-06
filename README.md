@@ -30,3 +30,16 @@ var coords = [ [ 15.603332, 78.227070 ],
                [ 15.610799, 78.226535 ] ];
 var result = geosimplify(coords, 5, 50);
 ```
+
+Alternate API:
+
+```javascript
+var geosimplifyByRef = require('@mapbox/geosimplify-js').byRef;
+var coords = [ [ 15.603332, 78.227070 ],
+               [ 15.606422, 78.226824 ],
+               [ 15.608782, 78.226667 ],
+               [ 15.610799, 78.226535 ] ];
+var result = geosimplifyByRef(coords, 5, 50);
+```
+
+In this API, `result` contains an array of indices into the `coords` array instead of points themselves.
